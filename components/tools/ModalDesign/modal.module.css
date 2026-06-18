@@ -1,0 +1,7 @@
+.modalBackground {
+    display: flex;
+    width: 600px;
+    height: 400px;
+    background-color: #7164c5;
+    border-radius: 10px;
+}
