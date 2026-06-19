@@ -2,6 +2,7 @@
 import WebpConverter from "@/components/tools/WebpConverter/WebpConverter";
 import PngConverter from "@/components/tools/PngConverter/PngConverter";
 import PListConverter from "@/components/tools/PListConverter/PListConverter";
+import DragonBoneTester from "@/components/tools/DragonBone/DragonBoneTester";
 import Image from "next/image";
 import navbar from "./navbar.module.css";
 import container from "./component.module.css";
@@ -14,20 +15,23 @@ export default function Home() {
     "Convert to PList",
     "Bitmap Font Tester",
     "Rich Text Tester",
-    "Dragon Bone Tester",
+    "Dragonbone Tester",
+    "Translation Generator"
   ];
 
   const toolsByCategory: Record<string, string[]> = {
     Converters: ["Convert to Webp", "Convert to PNG", "Convert to PList"],
     Testers: ["Bitmap Font Tester", "RichText Tester", "Dragonbone Tester"],
+    Generators: ["Translation Generator"]
   };
 
-  const toolCategory = ["Converters", "Testers"];
+  const toolCategory = ["Converters", "Testers", "Generators"];
 
   const toolComponents: Record<string, React.ReactNode> = {
     "Convert to Webp": <WebpConverter />,
     "Convert to PNG": <PngConverter />,
     "Convert to PList": <PListConverter />,
+    "Dragonbone Tester": <DragonBoneTester />
   };
 
   const [selectedTool, setSelectedTool] = useState(toolList[0]);
