@@ -1,7 +1,7 @@
 .modalBackground {
     display: flex;
     width: 600px;
-    height: 400px;
+    height: auto;
     min-width: 600px;
     min-height: 400px;
     background-color: #090040;
@@ -22,18 +22,4 @@
     color: #52D3D8;
     font-size: 28px;
     font-weight: bold;
-}
-
-.modalDragDropContainer {
-    display: flex;
-    width: 200px;
-    height: 90px;
-    justify-content: center;
-    align-items: center;
-}
-
-.modalDragDropContainer label {
-    color: #FFF;
-    font-size: 20px;
-    font-weight: 500;
 }

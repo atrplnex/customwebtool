@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Lexend } from "next/font/google";
 import "./globals.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const lexend = Lexend({
   subsets: ["latin"],
@@ -8,8 +9,8 @@ const lexend = Lexend({
 });
 
 export const metadata: Metadata = {
-  title: "NTT Game Developer Tools",
-  description: "Powered by: NTT Game Dev Team",
+  title: "Game Developer Tools",
+  description: "Powered by: AtrOS",
 };
 
 export default function RootLayout({
