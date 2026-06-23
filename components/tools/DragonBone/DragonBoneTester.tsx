@@ -418,31 +418,6 @@ export default function DragonBonesPreviewer() {
   // ── render ───────────────────────────────────────────────────────────────────
   return (
     <div className={styles.wrapper}>
-
-      {/* VIEWPORT */}
-      <div className={styles.viewport} ref={viewportRef}>
-        <div className={styles.canvasWrap} ref={canvasWrapRef}>
-          <div ref={frameRef} className={`${styles.canvasFrame} ${styles.landscape}`}>
-
-            {showOverlay && (
-              <div className={styles.overlay}>Load skeleton, atlas &amp; sprite sheet</div>
-            )}
-
-            <div className={styles.zoomControls}>
-              <div
-                className={`${styles.zoomBtn} ${handOn ? styles.zoomBtnActive : ''}`}
-                title="Hand tool (H)"
-                onClick={() => setHandMode(!handMode.current)}
-              >✋</div>
-              <div className={styles.zoomBtn} title="Zoom in"   onClick={() => zoomBy(1.2)}>+</div>
-              <div className={styles.zoomBtn} title="Zoom out"  onClick={() => zoomBy(1 / 1.2)}>−</div>
-              <div className={styles.zoomBtn} title="Reset view" onClick={centre}>⌖</div>
-              <div className={styles.zoomLabel}>{zoomLabel}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* PANEL */}
       <div
         ref={panelRef}
@@ -587,6 +562,31 @@ export default function DragonBonesPreviewer() {
           {log.msg}
         </div>
       </div>
+
+            {/* VIEWPORT */}
+      <div className={styles.viewport} ref={viewportRef}>
+        <div className={styles.canvasWrap} ref={canvasWrapRef}>
+          <div ref={frameRef} className={`${styles.canvasFrame} ${styles.landscape}`}>
+
+            {showOverlay && (
+              <div className={styles.overlay}>Load skeleton, atlas &amp; sprite sheet</div>
+            )}
+
+            <div className={styles.zoomControls}>
+              <div
+                className={`${styles.zoomBtn} ${handOn ? styles.zoomBtnActive : ''}`}
+                title="Hand tool (H)"
+                onClick={() => setHandMode(!handMode.current)}
+              >✋</div>
+              <div className={styles.zoomBtn} title="Zoom in"   onClick={() => zoomBy(1.2)}>+</div>
+              <div className={styles.zoomBtn} title="Zoom out"  onClick={() => zoomBy(1 / 1.2)}>−</div>
+              <div className={styles.zoomBtn} title="Reset view" onClick={centre}>⌖</div>
+              <div className={styles.zoomLabel}>{zoomLabel}</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    
   );
 }

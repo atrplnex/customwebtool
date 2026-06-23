@@ -1,6 +1,6 @@
 .wrapper {
   display: flex;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   overflow: hidden;
   background: #0b0f19;
@@ -19,7 +19,7 @@
   flex-direction: column;
   gap: 16px;
 
-  height: 100vh;
+  height: auto;
   overflow-y: auto;
 }
 
