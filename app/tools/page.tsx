@@ -54,7 +54,7 @@ export default function Tools() {
             {/* NAVBAR */}
             <div className={navbar.navbar}>
                 <div className={navbar.navbarToolTitle}>
-                    <label>Modern Dev Tool</label>
+                    <label>Website ni Arvin</label>
                 </div>
                 <div className={navbar.navbarToolContainer}>
                     {toolCategory.map((category) => (

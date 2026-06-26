@@ -14,6 +14,8 @@ export default function FontTesterTool() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [testText, setTestText] = useState("ABC123");
   const [glyphMap, setGlyphMap] = useState<Record<string, Glyph>>({});
+  const [fontSize, setFontSize] = useState(32);
+  const [atlasSize, setAtlasSize] = useState({ w: 0, h: 0 });
 
   const atlasUrl = useMemo(() => {
     if (!imageFile) return null;
@@ -27,6 +29,18 @@ export default function FontTesterTool() {
       }
     };
   }, [atlasUrl]);
+
+  useEffect(() => {
+    if (!imageFile) return;
+
+    const img = new Image();
+    img.src = URL.createObjectURL(imageFile);
+
+    img.onload = () => {
+      setAtlasSize({ w: img.width, h: img.height });
+    };
+  }, [imageFile]);
+
   const parseFnt = (text: string) => {
     const map: Record<string, Glyph> = {};
 
@@ -48,6 +62,7 @@ export default function FontTesterTool() {
 
     return map;
   };
+
   const loadFont = () => {
     const input = document.createElement("input");
 
@@ -68,6 +83,31 @@ export default function FontTesterTool() {
 
     input.click();
   };
+
+  const getGlyph = (char: string) => {
+    const code = char.codePointAt(0)!;
+
+    return (
+      glyphMap[char] ??
+      glyphMap[String(code)] ??
+      glyphMap[code.toString()] ??
+      null
+    );
+  };
+
+  const missingGlyphs = useMemo(() => {
+    const set = new Set<string>();
+
+    for (const char of Array.from(testText)) {
+      if (char === "\n") continue;
+
+      if (!getGlyph(char)) {
+        set.add(char);
+      }
+    }
+
+    return Array.from(set);
+  }, [testText, glyphMap]);
   return (
     <div className={styles.container}>
       <aside className={styles.sidebar}>
@@ -81,7 +121,6 @@ export default function FontTesterTool() {
               <div className={styles.fileIcon}>🅰️ Font</div>
 
               <div className={styles.fileInfo}>
-                <span className={styles.fileLabel}>Font File</span>
                 <span className={styles.fileName}>
                   {fntFile?.name ?? "No .FNT selected"}
                 </span>
@@ -97,7 +136,6 @@ export default function FontTesterTool() {
               <div className={styles.fileIcon}>🖼️ Image</div>
 
               <div className={styles.fileInfo}>
-                <span className={styles.fileLabel}>Atlas Image</span>
                 <span className={styles.fileName}>
                   {imageFile?.name ?? "No image selected"}
                 </span>
@@ -144,6 +182,42 @@ export default function FontTesterTool() {
             <span>{Object.keys(glyphMap).length} Glyphs Loaded</span>
           </div>
         </div>
+        {/* Font Size*/}
+        <div className={styles.fontControl}>
+          <div className={styles.fontHeader}>
+            <span className={styles.fontLabel}>Font Size</span>
+            <span className={styles.fontValue}>{fontSize}px</span>
+          </div>
+
+          <input
+            type="number"
+            min={1}
+            max={200}
+            value={fontSize}
+            onChange={(e) => {
+              const v = Math.min(200, Math.max(1, Number(e.target.value) || 1));
+              setFontSize(v);
+            }}
+            className={styles.fontInput}
+          />
+        </div>
+
+        {/* Missing Glyphs */}
+        <div className={styles.card}>
+          <h2>Missing Glyphs</h2>
+
+          {missingGlyphs.length === 0 ? (
+            <div className={styles.ok}>All glyphs found ✅</div>
+          ) : (
+            <div className={styles.missingList}>
+              {missingGlyphs.map((c, i) => (
+                <span key={i} className={styles.missingItem}>
+                  {c === " " ? "␠" : c}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
       </aside>
 
       <main className={styles.viewer}>
@@ -176,17 +250,25 @@ export default function FontTesterTool() {
                     </div>
                   );
                 }
+                const scale = fontSize / 32; // pick 32 as your base font size
 
                 return (
                   <div
                     key={i}
                     style={{
-                      width: glyph.w,
-                      height: glyph.h,
+                      width: glyph.w * scale,
+                      height: glyph.h * scale,
+
                       backgroundImage: `url(${atlasUrl})`,
-                      backgroundPosition: `-${glyph.x}px -${glyph.y}px`,
+
+                      // 🔥 IMPORTANT FIX
+                      backgroundPosition: `-${glyph.x * scale}px -${glyph.y * scale}px`,
+                      backgroundSize: `${atlasSize.w * scale}px ${atlasSize.h * scale}px`,
+
                       backgroundRepeat: "no-repeat",
+
                       imageRendering: "pixelated",
+                      display: "inline-block",
                     }}
                   />
                 );
